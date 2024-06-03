@@ -19,12 +19,12 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity>
         DataBaseContext context)
     {
         this.context = context ?? throw new ArgumentNullException(nameof(context));
-        entities = context.Set<TEntity>();
     }
    
     /// <inheritdoc />
     public virtual async Task<TEntity> AddAsync(TEntity entity)
     {
+        entities = context.Set<TEntity>();
         await entities.AddAsync(entity);
         await context.SaveChangesAsync();
 
