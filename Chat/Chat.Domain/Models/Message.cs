@@ -14,10 +14,11 @@ public class Message : BaseEntity
     [Required]
     [StringLength(100)]
     public string Value { get; set; }
-    
+
     /// <summary>
     /// Gets or sets a date time.
     /// </summary>
+    [Required]
     public DateTime DateTime { get; set; }
     
     /// <summary>

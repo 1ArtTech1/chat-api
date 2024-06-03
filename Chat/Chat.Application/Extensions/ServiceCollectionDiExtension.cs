@@ -1,3 +1,5 @@
+using Chat.Application.Providers.Interfaces;
+using Chat.Application.Providers;
 using Chat.Application.Services;
 using Chat.Application.Services.Interfaces;
 using Chat.Infrastructure.Extensions;
@@ -19,5 +21,6 @@ public static class ServiceCollectionDiExtension
         services.SetupInfrastructureDependencyInjection();
         services.AddScoped<IChatService, ChatService>();
         services.AddScoped<IMessageService, MessageService>();
+        services.AddSingleton<IGroupManagerProvider, GroupManagerProvider>();
     }
 }

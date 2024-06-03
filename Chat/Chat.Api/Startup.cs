@@ -33,8 +33,6 @@ public class Startup
             options.UseSqlServer(configuration.GetConnectionString(ApiConstants.Configurations.SqlConnectionString)), ServiceLifetime.Singleton);
         services.SetupApplicationDependencyInjection();
         services.SetupApiDependencyInjection();
-
-        services.AddSingleton<IGroupManagerProvider, GroupManagerProvider>();
         services.AddAutoMapper(Assembly.GetExecutingAssembly(), typeof(MappingProfile).Assembly);
     }
 
