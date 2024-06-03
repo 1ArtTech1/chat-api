@@ -14,7 +14,7 @@ public class MessageHub : Hub
 {
     private readonly ITransactionService transactionService;
     private readonly IMessageService messageService;
-    private readonly IGroupManagerProvider _groupManagerProvider;
+    private readonly IGroupManagerProvider groupManagerProvider;
     private readonly IHubContext<MessageHub> hubContext;
 
     /// <summary>
@@ -31,7 +31,7 @@ public class MessageHub : Hub
         IHubContext<MessageHub> hubContext)
     {
         this.hubContext = hubContext ?? throw new ArgumentNullException(nameof(hubContext));
-        this._groupManagerProvider = groupManagerProvider ?? throw new ArgumentNullException(nameof(groupManagerProvider));
+        this.groupManagerProvider = groupManagerProvider ?? throw new ArgumentNullException(nameof(groupManagerProvider));
         this.messageService = messageService ?? throw new ArgumentNullException(nameof(messageService));
         this.transactionService = transactionService ?? throw new ArgumentNullException(nameof(transactionService));
     }
@@ -53,7 +53,7 @@ public class MessageHub : Hub
     public async Task GetByChatIdAsync(int identifier)
     {
         var messages = await messageService.GetByChatId(identifier);
-        var allConnectionByIds = _groupManagerProvider.GroupManager.Where(keyValuePair => keyValuePair.Value.Equals(identifier));
+        var allConnectionByIds = groupManagerProvider.GroupManager.Where(keyValuePair => keyValuePair.Value.Equals(identifier));
 
         foreach (var connectionId in allConnectionByIds)
         {
@@ -67,14 +67,14 @@ public class MessageHub : Hub
     /// <param name="identifier">The identifier.</param>
     public void JoinGroup(int identifier)
     {
-        _groupManagerProvider.GroupManager.Remove(Context.ConnectionId);
-        _groupManagerProvider.GroupManager.Add(Context.ConnectionId, identifier);
+        groupManagerProvider.GroupManager.Remove(Context.ConnectionId);
+        groupManagerProvider.GroupManager.Add(Context.ConnectionId, identifier);
     }
     
     /// <inheritdoc />
     public override Task OnDisconnectedAsync(Exception? exception)
     {
-        _groupManagerProvider.GroupManager.Remove(Context.ConnectionId);
+        groupManagerProvider.GroupManager.Remove(Context.ConnectionId);
         
         return base.OnDisconnectedAsync(exception);
     }
